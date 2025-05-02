@@ -102,6 +102,8 @@ module.exports._channelFilter = _channelFilter
 module.exports._liveFilter = _liveFilter
 module.exports._allFilter = _allFilter
 
+module.exports._parseNumbers = _parseNumbers
+
 module.exports._parsePlaylistLastUpdateTime = _parsePlaylistLastUpdateTime
 
 /**

@@ -1,7 +1,27 @@
 const yts = require( './src/index.js' )
 
 // console.log( yts.search )
-m15()
+m17()
+
+async function m17 () {
+  const r = await yts('superman theme list');
+  console.log(' === VIDEOS === ')
+  console.log(r.videos)
+  console.log(' === CHANNELS === ')
+  console.log(r.channels)
+  console.log(' === PLAYLISTS === ')
+  console.log(r.playlists)
+}
+
+async function m16 () {
+  const r = await yts('pewdiepie playlist');
+  console.log(' === VIDEOS === ')
+  console.log(r.videos)
+  console.log(' === CHANNELS === ')
+  console.log(r.channels)
+  console.log(' === PLAYLISTS === ')
+  console.log(r.playlists)
+}
 
 async function m15 () {
   const video = await yts({ videoId: '-ObdvMkCKws' });
