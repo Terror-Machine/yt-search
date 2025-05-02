@@ -493,8 +493,13 @@ function _parseSearchResultInitialData ( responseText, callback )
 
     const hasList = (
       _jp.value( item, '$..compactPlaylistRenderer' ) ||
-      _jp.value( item, '$..playlistRenderer' )
+      _jp.value( item, '$..playlistRenderer' ) ||
+      _jp.value( item, `$..lockupViewModel..metadata..metadataRows[0]..metadataParts[1]..text.[?(@property == "content" && @ == "Playlist")]` )
     )
+
+    // https://jsonpath-plus.github.io/JSONPath/demo
+    // $..lockupViewModel..metadata..metadataRows[0]..metadataParts[1]..text.[?(@property == "content" && @ == "Playlist")]
+    // console.log('hasList: ' + hasList)
 
     const hasChannel = (
       _jp.value( item, '$..compactChannelRenderer' ) ||
@@ -506,7 +511,7 @@ function _parseSearchResultInitialData ( responseText, callback )
       _jp.value( item, '$..videoRenderer' )
     )
 
-    const listId = hasList && ( _jp.value( item, '$..playlistId' ) )
+    const listId = hasList && ( _jp.value( item, '$..watchEndpoint..playlistId' ) )
     const channelId = hasChannel && ( _jp.value( item, '$..channelId' ) )
     const videoId = hasVideo && ( _jp.value( item, '$..videoId' ) )
 
@@ -629,35 +634,45 @@ function _parseSearchResultInitialData ( responseText, callback )
         case 'list':
           {
             const thumbnail = (
-              _normalizeThumbnail( _jp.value( item, '$..thumbnail..url' ) ) ||
-              _normalizeThumbnail( _jp.value( item, '$..thumbnails..url' ) ) ||
-              _normalizeThumbnail( _jp.value( item, '$..thumbnails' ) )
+              _normalizeThumbnail( _jp.value( item, '$..primaryThumbnail..url' ) ) ||
+              _normalizeThumbnail( _jp.value( item, '$..thumbnail..url' ) ) || // DEPRECATED?
+              _normalizeThumbnail( _jp.value( item, '$..thumbnails..url' ) ) || // DEPRECATED
+              _normalizeThumbnail( _jp.value( item, '$..thumbnails' ) ) // DEPRECATED?
             )
 
             const title = (
-              _jp.value( item, '$..title..text' ) ||
-              _jp.value( item, '$..title..simpleText' )
+              _jp.value( item, '$..metadata..title..content' ) ||
+              _jp.value( item, '$..title..text' ) || // DEPRECATED?
+              _jp.value( item, '$..title..simpleText' ) // DEPRECATED?
             )
 
             const author_name = (
-              _jp.value( item, '$..shortBylineText..text' ) ||
-              _jp.value( item, '$..longBylineText..text' ) ||
-              _jp.value( item, '$..shortBylineText..simpleText' ) ||
-              _jp.value( item, '$..longBylineText..simpleTextn' )
+              _jp.value( item, '$..metadataParts[0]..text..content' ) ||
+              _jp.value( item, '$..shortBylineText..text' ) || // DEPRECATED?
+              _jp.value( item, '$..shortBylineText..text' ) || // DEPRECATED?
+              _jp.value( item, '$..longBylineText..text' ) || // DEPRECATED?
+              _jp.value( item, '$..shortBylineText..simpleText' ) || // DEPRECATED?
+              _jp.value( item, '$..longBylineText..simpleTextn' ) // DEPRECATED?
             ) || 'YouTube'
 
             const author_url = (
-              _jp.value( item, '$..shortBylineText..url' ) ||
-              _jp.value( item, '$..longBylineText..url' )
+              _jp.value( item, '$..metadataParts[0]..url' ) ||
+              _jp.value( item, '$..shortBylineText..url' ) || // DEPRECATED?
+              _jp.value( item, '$..longBylineText..url' ) // DEPRECATED?
             ) || ''
 
+            const video_count_label = (
+              _jp.value( item, '$..overlays..thumbnailBadges..text' )
+            )
+            console.log('video_count_label: ' + video_count_label)
+
             const video_count = (
-              _jp.value( item, '$..videoCountShortText..text' ) ||
-              _jp.value( item, '$..videoCountText..text' ) ||
-              _jp.value( item, '$..videoCountShortText..simpleText' ) ||
-              _jp.value( item, '$..videoCountText..simpleText' ) ||
-              _jp.value( item, '$..thumbnailText..text' ) ||
-              _jp.value( item, '$..thumbnailText..simpleText' )
+              _jp.value( item, '$..videoCountShortText..text' ) || // DEPRECATED?
+              _jp.value( item, '$..videoCountText..text' ) || // DEPRECATED?
+              _jp.value( item, '$..videoCountShortText..simpleText' ) || // DEPRECATED?
+              _jp.value( item, '$..videoCountText..simpleText' ) || // DEPRECATED?
+              _jp.value( item, '$..thumbnailText..text' ) || // DEPRECATED?
+              _jp.value( item, '$..thumbnailText..simpleText' ) // DEPRECATED?
             )
 
             // url ( playlist )
@@ -675,7 +690,10 @@ function _parseSearchResultInitialData ( responseText, callback )
               image: thumbnail,
               thumbnail: thumbnail,
 
-              videoCount: video_count,
+              videoCount: (
+                Number( _parseNumbers( video_count_label )[0] ) ||
+                video_count
+              ),
 
               author: {
                 name: author_name,
