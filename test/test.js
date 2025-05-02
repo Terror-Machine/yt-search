@@ -130,18 +130,17 @@ test( 'videos, playlists and users/channels', async function ( t ) {
   // Fri Oct 23 08:15:36 EEST 2020
   // looks like sometimes channel results don't show up, so combine a few
   // searches to try and ensure some show up
-  const r1 = await yts( 'pewdiepie channel' )
-  const r2 = await yts( 'valyrae channel' )
-  const r3 = await yts( 'dr disrespect channel' )
+  const r1 = await yts( 'pewdiepie playlist' )
+  const r2 = await yts( 'valkyrae channel' )
 
-  const videos = r1.videos.concat( r2.videos ).concat( r3.videos )
-  const channels = r1.channels.concat( r2.channels ).concat( r3.channels )
+  const videos = r1.videos.concat( r2.videos )
+  const channels = r1.channels.concat( r2.channels )
+  const playlists = r1.playlists.concat( r2.playlists )
 
   t.ok( videos.length > 0, 'videos found' )
   t.ok( channels.length > 0, 'accounts/channels found' )
 
-  const r4 = await yts( 'pewdiepie list' )
-  t.ok( r4.playlists.length > 0, 'playlists found' )
+  t.ok( playlists.length > 0, 'playlists found' )
 } )
 
 test( 'find live streams', function ( t ) {
@@ -596,10 +595,17 @@ test( 'search results: playlist', function ( t ) {
   yts( 'superman theme list', function ( err, r ) {
     t.error( err, 'no errors OK!' )
 
+    // console.log(r)
+
     const lists = r.playlists
 
     // Superman Theme Songs Playlist
     const sts = lists.filter( function ( playlist ) {
+      // console.log('---------------')
+      // console.log(playlist.title)
+      // console.log(playlist.author)
+      // console.log(playlist.videoCount)
+      // console.log()
       const keep = (
         playlist.title.toLowerCase() === 'superman theme songs' &&
         playlist.author.name === 'AJ Lelievre' &&
@@ -610,6 +616,8 @@ test( 'search results: playlist', function ( t ) {
 
       return keep
     } )[ 0 ]
+
+    // console.log(sts)
 
     t.equal( sts.url, 'https://youtube.com/playlist?list=PLYhKAl2FoGzC0IQkgfVtM991w3E8ro1yG', 'playlist url' )
     t.equal( sts.listId, 'PLYhKAl2FoGzC0IQkgfVtM991w3E8ro1yG', 'playlist id' )
