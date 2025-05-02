@@ -296,7 +296,7 @@ test( 'video metadata by id', function ( t ) {
     t.equal( video.author.url, 'https://youtube.com/@Redmario2569', 'author url' )
 
     t.comment(video.image)
-    t.equal( video.image.indexOf('https://i.ytimg.com/vi/e9vrfEoc8_g/') >= 0, 'image' )
+    t.ok( video.image.indexOf('https://i.ytimg.com/vi/e9vrfEoc8_g/') >= 0, 'image' )
     t.equal( video.image, video.thumbnail, 'common alternative' )
   } )
 } )
