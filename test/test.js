@@ -328,7 +328,7 @@ test( 'video metadata by id -ObdvMkCKws (special character "-" at beginning of i
   } )
 } )
 
-test( 'video metadata by id _JzeIf1zT14', function ( t ) {
+test.only( 'video metadata by id _JzeIf1zT14', function ( t ) {
   t.plan( 13 )
 
   yts( { videoId: '_JzeIf1zT14' }, function ( err, video ) {
@@ -383,10 +383,8 @@ test( 'video metadata by id _JzeIf1zT14', function ( t ) {
     t.equal( video.author.url, 'https://youtube.com/@DesazMusicYt', 'author url' )
 
     // TODO test fails sometimes?
-    t.ok(
-      (video.image === 'https://i.ytimg.com/vi/_JzeIf1zT14/hqdefault.jpg' ) ||
-      (video.image === 'https://i.ytimg.com/vi/_JzeIf1zT14/hq2.jpg')
-    , 'image' )
+    t.comment( video.image )
+    t.equal( video.image, 'https://i.ytimg.com/vi/_JzeIf1zT14/hqdefault.jpg', 'image' )
     t.equal( video.image, video.thumbnail, 'common alternative' )
   } )
 } )

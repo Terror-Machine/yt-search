@@ -1026,6 +1026,11 @@ function _parseVideoInitialData ( responseText, callback )
   )
 
   const thumbnailUrl = 'https://i.ytimg.com/vi/' + videoId + '/hqdefault.jpg'
+  // const thumbnailUrl = (
+  //   _jp.value( idata, '$..thumbnail..url' ) ||
+  //   _jp.value( idata, '$..thumbnails..url' ) ||
+  //   'https://i.ytimg.com/vi/' + videoId + '/hqdefault.jpg'
+  // )
 
   const seconds = Number(
     _jp.value( ipdata, '$..videoDetails..lengthSeconds' )
