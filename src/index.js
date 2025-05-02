@@ -1092,7 +1092,7 @@ function _parseVideoInitialData ( responseText, callback )
   // genre/category information seems to be lost completely
   if (!video.description || !video.timestamp || !video.seconds || !video.views) {
     debug('in video metadata backup to fill in missing data')
-    let q = `${video.videoId}`
+    let q = `${video.title}`
 
     debug( 'q (before): ' + q )
     // remove characters that mess up normal behaviour from id for searching
@@ -1110,7 +1110,8 @@ function _parseVideoInitialData ( responseText, callback )
         if (!r.videos) return callback( null, video )
         for (let i = 0; i < r.videos.length; i++) {
           const v = r.videos[i]
-          if (video.videoId != null && video.videoId === v.videoId) {
+          if (!v) continue;
+          if (video.videoId != null && video.videoId === v?.videoId) {
             Object.keys(video).forEach(function (key) {
               video[key] = v[key] || video[key]
             })
