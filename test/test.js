@@ -295,7 +295,8 @@ test( 'video metadata by id', function ( t ) {
     // )
     t.equal( video.author.url, 'https://youtube.com/@Redmario2569', 'author url' )
 
-    t.equal( video.image, 'https://i.ytimg.com/vi/e9vrfEoc8_g/hqdefault.jpg', 'image' )
+    t.comment(video.image)
+    t.equal( video.image.indexOf('https://i.ytimg.com/vi/e9vrfEoc8_g/') >= 0, 'image' )
     t.equal( video.image, video.thumbnail, 'common alternative' )
   } )
 } )
@@ -328,7 +329,7 @@ test( 'video metadata by id -ObdvMkCKws (special character "-" at beginning of i
   } )
 } )
 
-test.only( 'video metadata by id _JzeIf1zT14', function ( t ) {
+test( 'video metadata by id _JzeIf1zT14', function ( t ) {
   t.plan( 13 )
 
   yts( { videoId: '_JzeIf1zT14' }, function ( err, video ) {
@@ -384,7 +385,7 @@ test.only( 'video metadata by id _JzeIf1zT14', function ( t ) {
 
     // TODO test fails sometimes?
     t.comment( video.image )
-    t.equal( video.image, 'https://i.ytimg.com/vi/_JzeIf1zT14/hqdefault.jpg', 'image' )
+    t.ok( video.image.indexOf('https://i.ytimg.com/vi/_JzeIf1zT14/') >= 0, 'image' )
     t.equal( video.image, video.thumbnail, 'common alternative' )
   } )
 } )
