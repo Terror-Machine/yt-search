@@ -664,7 +664,7 @@ function _parseSearchResultInitialData ( responseText, callback )
             const video_count_label = (
               _jp.value( item, '$..overlays..thumbnailBadges..text' )
             )
-            console.log('video_count_label: ' + video_count_label)
+            // console.log('video_count_label: ' + video_count_label)
 
             const video_count = (
               _jp.value( item, '$..videoCountShortText..text' ) || // DEPRECATED?
@@ -1538,6 +1538,8 @@ function _parseNumbers ( label )
  */
 function _normalizeThumbnail ( thumbnails )
 {
+  if (!thumbnails) return undefined
+
   let t
   if ( typeof thumbnails === 'string' ) {
     t = thumbnails
